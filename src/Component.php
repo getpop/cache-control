@@ -2,7 +2,6 @@
 namespace PoP\CacheControl;
 
 use PoP\Root\Component\AbstractComponent;
-use PoP\CacheControl\Config\ServiceConfiguration;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\Root\Component\YAMLServicesTrait;
 
@@ -22,7 +21,6 @@ class Component extends AbstractComponent
         if (self::isEnabled()) {
             parent::init();
             self::initYAMLServices(dirname(__DIR__));
-            ServiceConfiguration::init();
         }
     }
 

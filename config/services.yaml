@@ -1,1 +1,4 @@
 services:
+    cache_control_manager:
+        class: \PoP\CacheControl\Managers\CacheControlManager
+        public: true

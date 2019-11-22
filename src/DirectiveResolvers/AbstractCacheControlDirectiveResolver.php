@@ -3,6 +3,7 @@ namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\CacheControl\Facades\CacheControlManagerFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -35,9 +36,11 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      */
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
+        // Set the max age from this field into the service which will calculate the max age for the request, based on all fields
         $maxAge = $this->getMaxAge($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
-        // Do something...
+        $cacheControlManager = CacheControlManagerFacade::getInstance();
+        $cacheControlManager->addMaxAge($maxAge);
     }
 
-    abstract public function getMaxAge(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations);
+    abstract public function getMaxAge(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations): int;
 }
