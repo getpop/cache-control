@@ -2,7 +2,7 @@
 namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\ComponentModel\DataloaderInterface;
-use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\CacheControl\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\CacheControl\Facades\CacheControlManagerFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
@@ -32,6 +32,12 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
         ];
     }
 
+    protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
+    {
+        // Further add for which providers it works
+        $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $this->getMaxAge();
+    }
+
     /**
      * Get the cache control for this field, and set it on the Engine
      *
@@ -50,10 +56,10 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
     {
         // Set the max age from this field into the service which will calculate the max age for the request, based on all fields
         // If it was provided as a directiveArg, use that value. Otherwise, use the one from the class
-        $maxAge = $this->directiveArgsForSchema['maxAge'] ?? $this->getMaxAge($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        $maxAge = $this->directiveArgsForSchema['maxAge'] ?? $this->getMaxAge();
         $cacheControlManager = CacheControlManagerFacade::getInstance();
         $cacheControlManager->addMaxAge($maxAge);
     }
 
-    abstract public function getMaxAge(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations): int;
+    abstract public function getMaxAge(): int;
 }
