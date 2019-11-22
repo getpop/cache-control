@@ -67,7 +67,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 $fieldArgElems,
                 [$fieldQueryInterpreter, 'isFieldArgumentValueAField']
             );
-            $directiveResolverInstances = $fieldResolver->getDirectiveResolverInstanceForDirective(
+            $fieldDirectiveResolverInstances = $fieldResolver->getDirectiveResolverInstanceForDirective(
                 $this->directive,
                 array_unique(array_merge(
                     $nestedFields,
@@ -78,10 +78,36 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                     )
                 ))
             );
-            // Iterate through all the directives, and simply resolve for each
-            foreach ($directiveResolverInstances as $directiveResolverInstance) {
-                // Each directive implements CacheControlDirectiveResolverInterface
-                $directiveResolverInstance->resolveCacheControlDirective();
+            // Nothing to do, there's some error
+            if (is_null($fieldDirectiveResolverInstances)) {
+                return;
+            }
+            // Consolidate the same directiveResolverInstances for different fields, as to execute them only once
+            $directiveResolverInstanceFieldsDataItems = [];
+            foreach ($fieldDirectiveResolverInstances as $field => $directiveResolverInstance) {
+                if (is_null($directiveResolverInstance)) {
+                    continue;
+                }
+
+                $instanceID = get_class($directiveResolverInstance);
+                if (!isset($directiveResolverInstanceFieldsDataItems[$instanceID])) {
+                    $directiveResolverInstanceFieldsDataItems[$instanceID]['instance'] = $directiveResolverInstance;
+                }
+                $directiveResolverInstanceFieldsDataItems[$instanceID]['fields'][] = $field;
+            }
+            // Iterate through all the directives, and simply resolve each
+            foreach ($directiveResolverInstanceFieldsDataItems as $instanceID => $directiveResolverInstanceFieldsDataItem) {
+                $directiveResolverInstance = $directiveResolverInstanceFieldsDataItem['instance'];
+                $directiveResolverFields = $directiveResolverInstanceFieldsDataItem['fields'];
+
+                // Regenerate the $idsDataFields for each directive
+                $directiveResolverIDDataFields = [];
+                foreach (array_keys($idsDataFields) as $id) {
+                    $directiveResolverIDDataFields[(string)$id] = [
+                        'direct' => $directiveResolverFields,
+                    ];
+                }
+                $directiveResolverInstance->resolveDirective($dataloader, $fieldResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
             }
             // That's it, we are done!
             return;
