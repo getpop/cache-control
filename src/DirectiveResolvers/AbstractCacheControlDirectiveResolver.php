@@ -2,6 +2,7 @@
 namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\CacheControl\Facades\CacheControlManagerFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
@@ -18,6 +19,17 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return $translationAPI->__('Cache the request through HTTP caching (https://tools.ietf.org/html/rfc7234). Set the cache control headers on a field-by-field basis; the overall cache max-age for the requested page will be calculated from all the requested fields', 'component-model');
+    }
+    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            [
+                SchemaDefinition::ARGNAME_NAME => 'maxAge',
+                SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_INT,
+                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Use a specific max-age value for the field, instead of the one configured in the directive', 'translate-directive'),
+            ],
+        ];
     }
 
     /**
@@ -37,7 +49,8 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Set the max age from this field into the service which will calculate the max age for the request, based on all fields
-        $maxAge = $this->getMaxAge($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        // If it was provided as a directiveArg, use that value. Otherwise, use the one from the class
+        $maxAge = $this->directiveArgsForSchema['maxAge'] ?? $this->getMaxAge($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
         $cacheControlManager = CacheControlManagerFacade::getInstance();
         $cacheControlManager->addMaxAge($maxAge);
     }
