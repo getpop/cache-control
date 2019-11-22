@@ -23,12 +23,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
             $fieldArgElems = QueryHelpers::getFieldArgElements($fieldArgs);
-            return $this->isAnyFieldArgumentValueAField($fieldArgElems);
+            return $this->isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgElems);
         }
         return false;
     }
 
-    protected function isAnyFieldArgumentValueAField($fieldArgValue): bool
+    protected function isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgValue): bool
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $fieldArgValue = $fieldQueryInterpreter->maybeConvertFieldArgumentValue($fieldArgValue);
@@ -37,7 +37,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             return array_reduce(
                 (array)$fieldArgValue,
                 function($carry, $item) {
-                    return $carry || $this->isAnyFieldArgumentValueAField($item);
+                    return $carry || $this->isFieldArgumentValueAFieldOrAnArrayWithAField($item);
                 },
                 false
             );
@@ -70,7 +70,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 );
             }
             $fields = array_values(array_unique($fields));
-            // Extract all the field arguments which are fields themselves
+            // Extract all the field arguments which are fields or have fields themselves
             $fieldArgElems = array_unique(GeneralUtils::arrayFlatten(array_map(
                 function($field) use($fieldQueryInterpreter) {
                     if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
@@ -82,8 +82,14 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             )));
             $nestedFields = array_filter(
                 $fieldArgElems,
-                [$fieldQueryInterpreter, 'isFieldArgumentValueAField']
+                [$this, 'isFieldArgumentValueAFieldOrAnArrayWithAField']
             );
+            // If any element is an array, like "[time()]" when doing /?query=extract(echo([time()]),0), then extract it and merge it into the main array
+            for ($i=count($nestedFields)-1;$i>=0;$i--) {
+
+            }
+            $nestedFields = (array)$fieldQueryInterpreter->maybeConvertFieldArgumentArrayValue($nestedFields);
+            $nestedFields = array_unique(GeneralUtils::arrayFlatten($nestedFields, true));
             $fieldDirectiveFields = array_unique(array_merge(
                 $nestedFields,
                 array_map(
