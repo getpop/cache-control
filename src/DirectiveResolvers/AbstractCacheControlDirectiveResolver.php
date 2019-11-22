@@ -8,7 +8,7 @@ use PoP\CacheControl\Facades\CacheControlManagerFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
-abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirectiveResolver
+abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirectiveResolver implements CacheControlDirectiveResolverInterface
 {
     const DIRECTIVE_NAME = 'cacheControl';
     public static function getDirectiveName(): string {
@@ -35,7 +35,9 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
     protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
     {
         // Further add for which providers it works
-        $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $this->getMaxAge();
+        if ($maxAge = $this->getMaxAge()) {
+            $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $maxAge;
+        }
     }
 
     /**
@@ -54,12 +56,17 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      */
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
+        $this->resolveCacheControlDirective();
+    }
+
+    public function resolveCacheControlDirective(): void
+    {
         // Set the max age from this field into the service which will calculate the max age for the request, based on all fields
         // If it was provided as a directiveArg, use that value. Otherwise, use the one from the class
         $maxAge = $this->directiveArgsForSchema['maxAge'] ?? $this->getMaxAge();
-        $cacheControlManager = CacheControlManagerFacade::getInstance();
-        $cacheControlManager->addMaxAge($maxAge);
+        if (!is_null($maxAge)) {
+            $cacheControlManager = CacheControlManagerFacade::getInstance();
+            $cacheControlManager->addMaxAge($maxAge);
+        }
     }
-
-    abstract public function getMaxAge(): int;
 }
