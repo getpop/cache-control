@@ -23,9 +23,26 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
             $fieldArgElems = QueryHelpers::getFieldArgElements($fieldArgs);
-            return FieldQueryUtils::isAnyFieldArgumentValueAField($fieldArgElems);
+            return $this->isAnyFieldArgumentValueAField($fieldArgElems);
         }
         return false;
+    }
+
+    protected function isAnyFieldArgumentValueAField($fieldArgValue): bool
+    {
+        $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
+        $fieldArgValue = $fieldQueryInterpreter->maybeConvertFieldArgumentValue($fieldArgValue);
+        // If it is an array, we must evaluate if any of its items is a field
+        if (is_array($fieldArgValue)) {
+            return array_reduce(
+                (array)$fieldArgValue,
+                function($carry, $item) {
+                    return $carry || $this->isAnyFieldArgumentValueAField($item);
+                },
+                false
+            );
+        }
+        return $fieldQueryInterpreter->isFieldArgumentValueAField($fieldArgValue);
     }
 
     public function getMaxAge(): ?int
@@ -67,16 +84,17 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 $fieldArgElems,
                 [$fieldQueryInterpreter, 'isFieldArgumentValueAField']
             );
+            $fieldDirectiveFields = array_unique(array_merge(
+                $nestedFields,
+                array_map(
+                    // To evaluate on the root fields, we must remove the fieldArgs, to avoid a loop
+                    [$fieldQueryInterpreter, 'getFieldName'],
+                    $fields
+                )
+            ));
             $fieldDirectiveResolverInstances = $fieldResolver->getDirectiveResolverInstanceForDirective(
                 $this->directive,
-                array_unique(array_merge(
-                    $nestedFields,
-                    array_map(
-                        // To evaluate on the root fields, we must remove the fieldArgs, to avoid a loop
-                        [$fieldQueryInterpreter, 'getFieldName'],
-                        $fields
-                    )
-                ))
+                $fieldDirectiveFields
             );
             // Nothing to do, there's some error
             if (is_null($fieldDirectiveResolverInstances)) {
