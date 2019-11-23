@@ -3,7 +3,6 @@ namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\GeneralUtils;
-use PoP\FieldQuery\FieldQueryUtils;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\FieldQuery\QueryHelpers;
@@ -80,16 +79,16 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 },
                 $fields
             )));
+            // Extract the nested fields which are either a field, or an array which contain a field
             $nestedFields = array_filter(
                 $fieldArgElems,
                 [$this, 'isFieldArgumentValueAFieldOrAnArrayWithAField']
             );
-            // If any element is an array, like "[time()]" when doing /?query=extract(echo([time()]),0), then extract it and merge it into the main array
-            for ($i=count($nestedFields)-1;$i>=0;$i--) {
-
-            }
-            $nestedFields = (array)$fieldQueryInterpreter->maybeConvertFieldArgumentArrayValue($nestedFields);
-            $nestedFields = array_unique(GeneralUtils::arrayFlatten($nestedFields, true));
+            // If any element is an array represented as a string, like "[time()]" when doing /?query=extract(echo([time()]),0), then extract it and merge it into the main array
+            $nestedFields = array_unique(GeneralUtils::arrayFlatten(
+                (array)$fieldQueryInterpreter->maybeConvertFieldArgumentArrayValue($nestedFields),
+                true
+            ));
             $fieldDirectiveFields = array_unique(array_merge(
                 $nestedFields,
                 array_map(
