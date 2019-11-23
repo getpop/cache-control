@@ -17,26 +17,26 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $directiveArgs
      * @return boolean
      */
-    public function resolveCanProcess(FieldResolverInterface $fieldResolver, string $directiveName, array $directiveArgs = [], string $field): bool
+    public function resolveCanProcess(FieldResolverInterface $fieldResolver, string $directiveName, array $directiveArgs = [], string $field, array &$variables): bool
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
             $fieldArgElems = QueryHelpers::getFieldArgElements($fieldArgs);
-            return $this->isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgElems);
+            return $this->isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgElems, $variables);
         }
         return false;
     }
 
-    protected function isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgValue): bool
+    protected function isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgValue, array &$variables): bool
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
-        $fieldArgValue = $fieldQueryInterpreter->maybeConvertFieldArgumentValue($fieldArgValue);
+        $fieldArgValue = $fieldQueryInterpreter->maybeConvertFieldArgumentValue($fieldArgValue, $variables);
         // If it is an array, we must evaluate if any of its items is a field
         if (is_array($fieldArgValue)) {
             return array_reduce(
                 (array)$fieldArgValue,
-                function($carry, $item) {
-                    return $carry || $this->isFieldArgumentValueAFieldOrAnArrayWithAField($item);
+                function($carry, $item) use($variables) {
+                    return $carry || $this->isFieldArgumentValueAFieldOrAnArrayWithAField($item, $variables);
                 },
                 false
             );
@@ -87,7 +87,9 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             // Extract the nested fields which are either a field, or an array which contain a field
             $nestedFields = array_filter(
                 $nestedFields,
-                [$this, 'isFieldArgumentValueAFieldOrAnArrayWithAField']
+                function($fieldArgValue) use($variables) {
+                    return $this->isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgValue, $variables);
+                }
             );
             $fieldDirectiveFields = array_unique(array_merge(
                 $nestedFields,
@@ -99,7 +101,8 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             ));
             $fieldDirectiveResolverInstances = $fieldResolver->getDirectiveResolverInstanceForDirective(
                 $this->directive,
-                $fieldDirectiveFields
+                $fieldDirectiveFields,
+                $variables
             );
             // Nothing to do, there's some error
             if (is_null($fieldDirectiveResolverInstances)) {
