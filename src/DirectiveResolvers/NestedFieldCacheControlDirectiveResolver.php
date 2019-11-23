@@ -1,14 +1,32 @@
 <?php
 namespace PoP\CacheControl\DirectiveResolvers;
 
-use PoP\ComponentModel\DataloaderInterface;
+use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
+use PoP\ComponentModel\DataloaderInterface;
+use PoP\CacheControl\Schema\SchemaDefinition;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\FieldQuery\QueryHelpers;
 
 class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
+    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return sprintf(
+            $translationAPI->__('%1$s %2$s'),
+            $translationAPI->__('Helper directive to calculate the Cache Control header when the field contains nested fields.', 'cache-control'),
+            parent::getSchemaDirectiveDescription($fieldResolver)
+        );
+    }
+
+    protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $translationAPI->__('The minimum max-age calculated among the affected fields and all their nested fields.', 'cache-control');
+    }
+
     /**
      * If any argument is a field, then this directive will involve them to calculate the minimum max-age
      *
