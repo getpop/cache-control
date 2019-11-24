@@ -64,10 +64,10 @@ Nested fields are also taken into account when computing the lowest max-age:
 
 ```php
 /?query=
-  echo(arrayAsQueryStr(posts()))
+  echo(posts())
 ```
 
-<a href="https://newapi.getpop.org/api/graphql/?query=echo(arrayAsQueryStr(posts()))">[View query results]</a>
+<a href="https://newapi.getpop.org/api/graphql/?query=echo(posts())">[View query results]</a>
 
 `"time"` field is not to be cached (max-age: 0):
 
