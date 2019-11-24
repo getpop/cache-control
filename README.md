@@ -32,7 +32,9 @@ $ composer require getpop/cache-control dev-master
 
 ## How it works
 
-It adds a mandatory directive `<cacheControl>` to all fields, which an associated max-age configuration, set on a field-by-field basis. The response will then be added a `Cache Control` header with the lowest max-age from all the requested fields, or `no-store` if any field is set to not be cached (max-age: 0).
+It adds a mandatory directive `<cacheControl>` to all fields, which has a max-age value set for each field. 
+
+The response will send a `Cache-Control` header with the lowest max-age from all the requested fields, or `no-store` if any field has max-age: 0.
 
 ## Examples
 
