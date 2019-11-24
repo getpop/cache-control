@@ -38,7 +38,7 @@ The response will send a `Cache-Control` header with the lowest max-age from all
 
 ## Examples
 
-Click on the following links below, using Chrome or Firefox's developer tools, and inspect the response headers in the Network tab.
+> **Note:**<br/>Click on the following links below, and inspect the response headers using Chrome or Firefox's developer tools' Network tab.
 
 Operators have a max-age of 1 year:
 
