@@ -15,10 +15,19 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
         return self::DIRECTIVE_NAME;
     }
 
+    /**
+     * Because this directive will be implemented several times, make its schema definition be added only once
+     *
+     * @return void
+     */
+    public function skipAddingToSchemaDefinition() {
+        return true;
+    }
+
     public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Cache the request through HTTP caching (https://tools.ietf.org/html/rfc7234). Set the cache control headers on a field-by-field basis; the overall cache max-age for the requested page will be calculated from all the requested fields', 'component-model');
+        return $translationAPI->__('HTTP caching (https://tools.ietf.org/html/rfc7234): Cache the response by setting a Cache-Control header with a max-age value; this value is calculated as the minimum max-age value among all requested fields. If any field has max-age: 0, a corresponding \'no-store\' value is sent, indicating to not cache the response', 'component-model');
     }
     public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
     {
@@ -32,14 +41,14 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
         ];
     }
 
-    protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
-    {
-        // Further add for which providers it works
-        $maxAge = $this->getMaxAge();
-        if (!is_null($maxAge)) {
-            $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $maxAge;
-        }
-    }
+    // protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
+    // {
+    //     // Further add for which providers it works
+    //     $maxAge = $this->getMaxAge();
+    //     if (!is_null($maxAge)) {
+    //         $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $maxAge;
+    //     }
+    // }
 
     /**
      * Get the cache control for this field, and set it on the Engine
