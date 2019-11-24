@@ -19,8 +19,6 @@ Via Composer
 $ composer require getpop/cache-control dev-master
 ```
 
-<a href="">[View query results]</a>
-
 **Note:** Your `composer.json` file must have the configuration below to accept minimum stability `"dev"` (there are no releases for PoP yet, and the code is installed directly from the `master` branch):
 
 ```javascript
@@ -31,8 +29,6 @@ $ composer require getpop/cache-control dev-master
     ...
 }
 ```
-
-<a href="">[View query results]</a>
 
 ## How it works
 
@@ -115,8 +111,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ``` bash
 $ composer test
 ```
-
-<a href="">[View query results]</a>
 
 ## Contributing
 
