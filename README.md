@@ -19,6 +19,8 @@ Via Composer
 $ composer require getpop/cache-control dev-master
 ```
 
+<a href="">[View query results]</a>
+
 **Note:** Your `composer.json` file must have the configuration below to accept minimum stability `"dev"` (there are no releases for PoP yet, and the code is installed directly from the `master` branch):
 
 ```javascript
@@ -30,13 +32,79 @@ $ composer require getpop/cache-control dev-master
 }
 ```
 
+<a href="">[View query results]</a>
+
 ## How it works
 
-Coming soon...
+It adds a mandatory directive `<cacheControl>` to all fields, which an associated max-age configuration, set on a field-by-field basis. The response will then be added a `Cache Control` header with the lowest max-age from all the requested fields, or `no-store` if any field is set to not be cached (max-age: 0).
 
-<!--
-Add HTTP caching to the response, based on configuration set by each field
--->
+## Examples
+
+Click on the following links below, using Chrome or Firefox's developer tools, and inspect the response headers in the Network tab.
+
+Operators have a max-age of 1 year:
+
+```php
+/?query=
+  echo(Hello world!)
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=echo(Hello+world!)">[View query results]</a>
+
+By default, fields have a max-age of 1 hour:
+
+```php
+/?query=
+  echo(Hello world!)|
+  posts.
+    title
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=echo(Hello+world!)|posts.title">[View query results]</a>
+
+Nested fields are also taken into account when computing the lowest max-age:
+
+```php
+/?query=
+  echo(arrayAsQueryStr(posts()))
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=echo(arrayAsQueryStr(posts()))">[View query results]</a>
+
+`"time"` field is not to be cached (max-age: 0):
+
+```php
+/?query=
+  time
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=time">[View query results]</a>
+
+Ways to not cache a response:
+
+a. Add field `"time"` to the query:
+
+```php
+/?query=
+  time|
+  echo(Hello world!)|
+  posts.
+    title
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=time|echo(Hello+world!)|posts.title">[View query results]</a>
+
+b. Override the default `maxAge` configuration for a field, by adding argument `maxAge: 0` to directive `<cacheControl>`:
+
+```php
+/?query=
+  echo(Hello world!)|
+  posts.
+    title<cacheControl(maxAge:0)>
+```
+
+<a href="https://newapi.getpop.org/api/graphql/?query=echo(Hello+world!)|posts.title<cacheControl(maxAge:0)>">[View query results]</a>
+
 
 ## Change log
 
@@ -47,6 +115,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ``` bash
 $ composer test
 ```
+
+<a href="">[View query results]</a>
 
 ## Contributing
 
