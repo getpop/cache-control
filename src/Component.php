@@ -55,8 +55,8 @@ class Component extends AbstractComponent
     protected static function setDirectiveResolverPriorities()
     {
         // It must execute before anyone else!
-        NestedFieldCacheControlDirectiveResolver::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, PHP_INT_MAX);
+        NestedFieldCacheControlDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS, PHP_INT_MAX);
         // It must execute last!
-        CacheControlDirectiveResolver::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, 0);
+        CacheControlDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS, 0);
     }
 }
