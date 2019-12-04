@@ -6,18 +6,18 @@ use PoP\ComponentModel\GeneralUtils;
 use PoP\ComponentModel\DataloaderInterface;
 // use PoP\CacheControl\Schema\SchemaDefinition;
 // use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
-    // public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    // public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     // {
     //     $translationAPI = TranslationAPIFacade::getInstance();
     //     return sprintf(
     //         $translationAPI->__('%1$s %2$s'),
     //         $translationAPI->__('Helper directive to calculate the Cache Control header when the field contains nested fields.', 'cache-control'),
-    //         parent::getSchemaDirectiveDescription($fieldResolver)
+    //         parent::getSchemaDirectiveDescription($typeResolver)
     //     );
     // }
 
@@ -30,12 +30,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
     /**
      * If any argument is a field, then this directive will involve them to calculate the minimum max-age
      *
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param string $directiveName
      * @param array $directiveArgs
      * @return boolean
      */
-    public function resolveCanProcess(FieldResolverInterface $fieldResolver, string $directiveName, array $directiveArgs = [], string $field, array &$variables): bool
+    public function resolveCanProcess(TypeResolverInterface $typeResolver, string $directiveName, array $directiveArgs = [], string $field, array &$variables): bool
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
@@ -74,7 +74,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $idsDataFields
      * @return integer
      */
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         if ($idsDataFields) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
@@ -117,7 +117,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                     $fields
                 )
             ));
-            $fieldDirectiveResolverInstances = $fieldResolver->getDirectiveResolverInstanceForDirective(
+            $fieldDirectiveResolverInstances = $typeResolver->getDirectiveResolverInstanceForDirective(
                 $this->directive,
                 $fieldDirectiveFields,
                 $variables
@@ -151,12 +151,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                         'direct' => $directiveResolverFields,
                     ];
                 }
-                $directiveResolverInstance->resolveDirective($dataloader, $fieldResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $directiveResolverInstance->resolveDirective($dataloader, $typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
             }
             // That's it, we are done!
             return;
         }
 
-        return parent::resolveDirective($dataloader, $fieldResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        return parent::resolveDirective($dataloader, $typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
 }

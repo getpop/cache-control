@@ -3,7 +3,7 @@ namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\CacheControl\Environment;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
 class CacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
