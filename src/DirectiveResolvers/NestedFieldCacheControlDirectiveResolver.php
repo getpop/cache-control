@@ -3,7 +3,7 @@ namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
-use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
 // use PoP\CacheControl\Schema\SchemaDefinition;
 // use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -74,7 +74,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $idsDataFields
      * @return integer
      */
-    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         if ($idsDataFields) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
@@ -151,12 +151,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                         'direct' => $directiveResolverFields,
                     ];
                 }
-                $directiveResolverInstance->resolveDirective($dataloader, $typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $directiveResolverInstance->resolveDirective($typeDataResolver, $typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
             }
             // That's it, we are done!
             return;
         }
 
-        return parent::resolveDirective($dataloader, $typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        return parent::resolveDirective($typeDataResolver, $typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
 }

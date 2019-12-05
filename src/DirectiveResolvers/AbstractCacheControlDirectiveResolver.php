@@ -1,7 +1,7 @@
 <?php
 namespace PoP\CacheControl\DirectiveResolvers;
 
-use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
 use PoP\CacheControl\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\CacheControl\Facades\CacheControlManagerFacade;
@@ -75,7 +75,7 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      * @param array $schemaDeprecations
      * @return void
      */
-    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $this->resolveCacheControlDirective();
     }
