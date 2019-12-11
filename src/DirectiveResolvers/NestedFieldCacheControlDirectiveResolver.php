@@ -74,7 +74,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $idsDataFields
      * @return integer
      */
-    public function resolveDirective(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataLoaderInterface $typeDataLoader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         if ($idsDataFields) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
@@ -151,12 +151,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                         'direct' => $directiveResolverFields,
                     ];
                 }
-                $directiveResolverInstance->resolveDirective($typeDataResolver, $typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $convertibleDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $directiveResolverInstance->resolveDirective($typeDataLoader, $typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $convertibleDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
             }
             // That's it, we are done!
             return;
         }
 
-        return parent::resolveDirective($typeDataResolver, $typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $convertibleDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        return parent::resolveDirective($typeDataLoader, $typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $convertibleDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
 }
