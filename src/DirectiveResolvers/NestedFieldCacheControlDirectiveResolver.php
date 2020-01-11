@@ -15,7 +15,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
     //     $translationAPI = TranslationAPIFacade::getInstance();
     //     return sprintf(
     //         $translationAPI->__('%1$s %2$s'),
-    //         $translationAPI->__('Helper directive to calculate the Cache Control header when the field contains nested fields.', 'cache-control'),
+    //         $translationAPI->__('Helper directive to calculate the Cache Control header when the field composes other fields.', 'cache-control'),
     //         parent::getSchemaDirectiveDescription($typeResolver)
     //     );
     // }
@@ -23,7 +23,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
     // protected function addSchemaDefinitionForDirective(array &$schemaDefinition)
     // {
     //     $translationAPI = TranslationAPIFacade::getInstance();
-    //     $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $translationAPI->__('The minimum max-age calculated among the affected fields and all their nested fields.', 'cache-control');
+    //     $schemaDefinition[SchemaDefinition::ARGNAME_MAX_AGE] = $translationAPI->__('The minimum max-age calculated among the affected fields and all their composed fields.', 'cache-control');
     // }
 
     /**
@@ -68,7 +68,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
     }
 
     /**
-     * Calculate the max-age involving also the nested fields
+     * Calculate the max-age involving also the composed fields
      *
      * @param array $idsDataFields
      * @return integer
@@ -101,7 +101,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 (array)$fieldQueryInterpreter->maybeConvertFieldArgumentArrayValue($fieldArgElems),
                 true
             ));
-            // Extract the nested fields which are either a field, or an array which contain a field
+            // Extract the composed fields which are either a field, or an array which contain a field
             $nestedFields = array_filter(
                 $nestedFields,
                 function($fieldArgValue) use($variables) {

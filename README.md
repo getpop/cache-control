@@ -60,7 +60,7 @@ By default, fields have a max-age of 1 hour:
 
 <a href="https://newapi.getpop.org/api/graphql/?query=echo(Hello+world!)|posts.title">[View query results]</a>
 
-Nested fields are also taken into account when computing the lowest max-age:
+Composed fields are also taken into account when computing the lowest max-age:
 
 ```php
 /?query=
