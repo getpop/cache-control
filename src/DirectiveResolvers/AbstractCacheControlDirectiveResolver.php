@@ -15,6 +15,16 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
     }
 
     /**
+     * Set the cache even when there are no elements: they might've been removed due to some validation, and this caching maxAge must be respected!
+     *
+     * @return boolean
+     */
+    public function needsIDsDataFieldsToExecute(): bool
+    {
+        return false;
+    }
+
+    /**
      * Because this directive will be implemented several times, make its schema definition be added only once
      *
      * @return void
