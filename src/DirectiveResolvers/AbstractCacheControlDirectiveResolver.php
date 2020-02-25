@@ -29,7 +29,7 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      *
      * @return void
      */
-    public function skipAddingToSchemaDefinition() {
+    public function skipAddingToSchemaDefinition(): bool {
         return true;
     }
 
