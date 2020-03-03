@@ -3,6 +3,14 @@ services:
         class: \PoP\CacheControl\Managers\CacheControlEngine
         public: true
 
+    cache_control_manager:
+        class: \PoP\CacheControl\Managers\CacheControlManager
+        public: true
+
     PoP\CacheControl\DirectiveResolvers\:
         resource: '../src/DirectiveResolvers/*'
+        public: true
+
+    PoP\CacheControl\TypeResolverDecorators\:
+        resource: '../src/TypeResolverDecorators/*'
         public: true
