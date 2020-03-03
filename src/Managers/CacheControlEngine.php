@@ -1,7 +1,7 @@
 <?php
 namespace PoP\CacheControl\Managers;
 
-class CacheControlManager implements CacheControlManagerInterface
+class CacheControlEngine implements CacheControlEngineInterface
 {
     protected $minimumMaxAge;
 

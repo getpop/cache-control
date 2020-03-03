@@ -3,7 +3,7 @@ namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\CacheControl\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\CacheControl\Facades\CacheControlManagerFacade;
+use PoP\CacheControl\Facades\CacheControlEngineFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -95,7 +95,7 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
         // If it was provided as a directiveArg, use that value. Otherwise, use the one from the class
         $maxAge = $this->directiveArgsForSchema['maxAge'] ?? $this->getMaxAge();
         if (!is_null($maxAge)) {
-            $cacheControlManager = CacheControlManagerFacade::getInstance();
+            $cacheControlManager = CacheControlEngineFacade::getInstance();
             $cacheControlManager->addMaxAge($maxAge);
         }
     }

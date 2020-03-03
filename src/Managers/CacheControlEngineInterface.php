@@ -1,7 +1,7 @@
 <?php
 namespace PoP\CacheControl\Managers;
 
-interface CacheControlManagerInterface
+interface CacheControlEngineInterface
 {
     /**
      * Add a max age from a requested field

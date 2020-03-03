@@ -1,6 +1,6 @@
 services:
-    cache_control_manager:
-        class: \PoP\CacheControl\Managers\CacheControlManager
+    cache_control_engine:
+        class: \PoP\CacheControl\Managers\CacheControlEngine
         public: true
 
     PoP\CacheControl\DirectiveResolvers\:
