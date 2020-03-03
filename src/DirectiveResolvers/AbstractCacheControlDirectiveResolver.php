@@ -99,4 +99,6 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
             $cacheControlManager->addMaxAge($maxAge);
         }
     }
+
+    abstract public function getMaxAge(): ?int;
 }
