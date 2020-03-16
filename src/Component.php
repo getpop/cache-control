@@ -39,9 +39,9 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function prematureBoot()
+    public static function beforeBoot()
     {
-        parent::prematureBoot();
+        parent::beforeBoot();
 
         // Initialize directive resolvers, attaching each of them using the right priorities
         // ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
@@ -53,9 +53,9 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function lateBoot()
+    public static function afterBoot()
     {
-        parent::lateBoot();
+        parent::afterBoot();
 
         // Initialize services
         ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
