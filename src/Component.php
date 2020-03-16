@@ -43,11 +43,22 @@ class Component extends AbstractComponent
     {
         parent::boot();
 
-        // Initialize services
-        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
         // Initialize directive resolvers, attaching each of them using the right priorities
         // ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
         self::setDirectiveResolverPriorities();
+    }
+
+    /**
+     * Boot component
+     *
+     * @return void
+     */
+    public static function reallyBoot()
+    {
+        parent::reallyBoot();
+
+        // Initialize services
+        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
     }
 
     /**
