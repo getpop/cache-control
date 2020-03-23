@@ -34,7 +34,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $directiveArgs
      * @return boolean
      */
-    public function resolveCanProcess(TypeResolverInterface $typeResolver, string $directiveName, array $directiveArgs = [], string $field, array &$variables): bool
+    public function resolveCanProcess(TypeResolverInterface $typeResolver, string $directiveName, array $directiveArgs, string $field, array &$variables): bool
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
