@@ -150,12 +150,12 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                         'direct' => $directiveResolverFields,
                     ];
                 }
-                $directiveResolverInstance->resolveDirective($typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $directiveResolverInstance->resolveDirective($typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $succeedingPipelineDirectiveResolverInstances, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
             }
             // That's it, we are done!
             return;
         }
 
-        return parent::resolveDirective($typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        return parent::resolveDirective($typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $succeedingPipelineDirectiveResolverInstances, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
 }
