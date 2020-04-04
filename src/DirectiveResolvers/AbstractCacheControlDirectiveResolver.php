@@ -2,6 +2,7 @@
 namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\CacheControl\Schema\SchemaDefinition;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\CacheControl\Facades\CacheControlEngineFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -31,6 +32,26 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      * @return void
      */
     public function skipAddingToSchemaDefinition(): bool {
+        return true;
+    }
+
+    /**
+     * This is a "Schema" type directive
+     *
+     * @return string
+     */
+    public function getDirectiveType(): string
+    {
+        return DirectiveTypes::SCHEMA;
+    }
+
+    /**
+     * Allow it to execute multiple times
+     *
+     * @return boolean
+     */
+    public function canExecuteMultipleTimesInField(): bool
+    {
         return true;
     }
 

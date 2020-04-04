@@ -6,7 +6,7 @@ use PoP\CacheControl\Environment;
 class CacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
     /**
-     * Because this directive will be implemented several times, make its schema definition be added only once
+     * Do add this directive to the schema
      *
      * @return void
      */
