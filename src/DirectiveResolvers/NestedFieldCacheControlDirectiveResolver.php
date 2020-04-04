@@ -2,7 +2,7 @@
 namespace PoP\CacheControl\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
-use PoP\ComponentModel\GeneralUtils;
+use PoP\ComponentModel\Misc\GeneralUtils;
 // use PoP\CacheControl\Schema\SchemaDefinition;
 // use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
