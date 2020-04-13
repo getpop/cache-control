@@ -10,7 +10,8 @@ class CacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolve
      *
      * @return void
      */
-    public function skipAddingToSchemaDefinition(): bool {
+    public function skipAddingToSchemaDefinition(): bool
+    {
         return false;
     }
 

@@ -52,7 +52,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
         if (is_array($fieldArgValue)) {
             return array_reduce(
                 (array)$fieldArgValue,
-                function($carry, $item) use($variables) {
+                function ($carry, $item) use ($variables) {
                     return $carry || $this->isFieldArgumentValueAFieldOrAnArrayWithAField($item, $variables);
                 },
                 false
@@ -88,7 +88,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             $fields = array_values(array_unique($fields));
             // Extract all the field arguments which are fields or have fields themselves
             $fieldArgElems = array_unique(GeneralUtils::arrayFlatten(array_map(
-                function($field) use($fieldQueryInterpreter) {
+                function ($field) use ($fieldQueryInterpreter) {
                     if ($fieldArgs = $fieldQueryInterpreter->getFieldArgs($field)) {
                         return QueryHelpers::getFieldArgElements($fieldArgs);
                     }
@@ -104,7 +104,7 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             // Extract the composed fields which are either a field, or an array which contain a field
             $nestedFields = array_filter(
                 $nestedFields,
-                function($fieldArgValue) use($variables) {
+                function ($fieldArgValue) use ($variables) {
                     return $this->isFieldArgumentValueAFieldOrAnArrayWithAField($fieldArgValue, $variables);
                 }
             );

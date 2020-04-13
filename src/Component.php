@@ -58,7 +58,7 @@ class Component extends AbstractComponent
         parent::afterBoot();
 
         // Initialize services
-        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
+        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__ . '\\TypeResolverDecorators');
     }
 
     /**

@@ -14,4 +14,3 @@ class Environment
         return isset($_ENV['DEFAULT_CACHE_CONTROL_MAX_AGE']) ? (int)$_ENV['DEFAULT_CACHE_CONTROL_MAX_AGE'] : 60;
     }
 }
-
