@@ -16,7 +16,7 @@ Add HTTP caching to the response
 Via Composer
 
 ``` bash
-$ composer require getpop/cache-control dev-master
+composer require getpop/cache-control dev-master
 ```
 
 **Note:** Your `composer.json` file must have the configuration below to accept minimum stability `"dev"` (there are no releases for PoP yet, and the code is installed directly from the `master` branch):
@@ -103,7 +103,6 @@ b. Override the default `maxAge` configuration for a field, by adding argument `
 
 <a href="https://newapi.getpop.org/api/graphql/?query=echo(Hello+world!)|posts.title<cacheControl(maxAge:0)>">[View query results]</a>
 
-
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
@@ -111,7 +110,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
-$ composer test
+composer test
 ```
 
 ## Contributing
