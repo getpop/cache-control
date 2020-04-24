@@ -76,11 +76,28 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
      * @param array $idsDataFields
      * @return integer
      */
-    public function resolveDirective(TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$succeedingPipelineDirectiveResolverInstances, array &$resultIDItems, array &$unionDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$dbDeprecations, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
-    {
+    public function resolveDirective(
+        TypeResolverInterface $typeResolver,
+        array &$idsDataFields,
+        array &$succeedingPipelineIDsDataFields,
+        array &$succeedingPipelineDirectiveResolverInstances,
+        array &$resultIDItems,
+        array &$unionDBKeyIDs,
+        array &$dbItems,
+        array &$previousDBItems,
+        array &$variables,
+        array &$messages,
+        array &$dbErrors,
+        array &$dbWarnings,
+        array &$dbDeprecations,
+        array &$schemaErrors,
+        array &$schemaWarnings,
+        array &$schemaDeprecations
+    ): void {
         if ($idsDataFields) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
-            // Iterate through all the arguments, calculate the maxAge for each of them, and then return the minimum value from all of them and the directiveName for this field
+            // Iterate through all the arguments, calculate the maxAge for each of them,
+            // and then return the minimum value from all of them and the directiveName for this field
             $fields = [];
             foreach ($idsDataFields as $id => $dataFields) {
                 $fields = array_merge(
@@ -99,7 +116,8 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                 },
                 $fields
             )));
-            // If any element is an array represented as a string, like "[time()]" when doing /?query=extract(echo([time()]),0), then extract it and merge it into the main array
+            // If any element is an array represented as a string, like "[time()]"
+            // when doing /?query=extract(echo([time()]),0), then extract it and merge it into the main array
             $nestedFields = array_unique(GeneralUtils::arrayFlatten(
                 (array)$fieldQueryInterpreter->maybeConvertFieldArgumentArrayValue($fieldArgElems),
                 true
@@ -159,6 +177,24 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             return;
         }
 
-        return parent::resolveDirective($typeResolver, $idsDataFields, $succeedingPipelineIDsDataFields, $succeedingPipelineDirectiveResolverInstances, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        // Otherwise, let the parent process it
+        parent::resolveDirective(
+            $typeResolver,
+            $idsDataFields,
+            $succeedingPipelineIDsDataFields,
+            $succeedingPipelineDirectiveResolverInstances,
+            $resultIDItems,
+            $unionDBKeyIDs,
+            $dbItems,
+            $previousDBItems,
+            $variables,
+            $messages,
+            $dbErrors,
+            $dbWarnings,
+            $dbDeprecations,
+            $schemaErrors,
+            $schemaWarnings,
+            $schemaDeprecations
+        );
     }
 }
