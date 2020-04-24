@@ -90,9 +90,13 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         if ($idsDataFields) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
@@ -171,7 +175,28 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
                         'direct' => $directiveResolverFields,
                     ];
                 }
-                $directiveResolverInstance->resolveDirective($typeResolver, $directiveResolverIDDataFields, $succeedingPipelineIDsDataFields, $succeedingPipelineDirectiveResolverInstances, $resultIDItems, $unionDBKeyIDs, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $dbDeprecations, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $directiveResolverInstance->resolveDirective(
+                    $typeResolver,
+                    $directiveResolverIDDataFields,
+                    $succeedingPipelineIDsDataFields,
+                    $succeedingPipelineDirectiveResolverInstances,
+                    $resultIDItems,
+                    $unionDBKeyIDs,
+                    $dbItems,
+                    $previousDBItems,
+                    $variables,
+                    $messages,
+                    $dbErrors,
+                    $dbWarnings,
+                    $dbDeprecations,
+                    $dbNotices,
+                    $dbTraces,
+                    $schemaErrors,
+                    $schemaWarnings,
+                    $schemaDeprecations,
+                    $schemaNotices,
+                    $schemaTraces
+                );
             }
             // That's it, we are done!
             return;
@@ -192,9 +217,13 @@ class NestedFieldCacheControlDirectiveResolver extends AbstractCacheControlDirec
             $dbErrors,
             $dbWarnings,
             $dbDeprecations,
+            $dbNotices,
+            $dbTraces,
             $schemaErrors,
             $schemaWarnings,
-            $schemaDeprecations
+            $schemaDeprecations,
+            $schemaNotices,
+            $schemaTraces
         );
     }
 }

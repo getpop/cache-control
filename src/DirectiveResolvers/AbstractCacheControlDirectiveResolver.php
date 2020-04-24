@@ -124,9 +124,13 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         $this->resolveCacheControlDirective();
     }
