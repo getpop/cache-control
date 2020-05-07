@@ -7,7 +7,6 @@ namespace PoP\CacheControl;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Root\Component\CanDisableComponentTrait;
-// use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\CacheControl\DirectiveResolvers\CacheControlDirectiveResolver;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
@@ -34,10 +33,7 @@ class Component extends AbstractComponent
 
     protected static function resolveEnabled()
     {
-        return
-            // Cache only GET operations
-            $_SERVER['REQUEST_METHOD'] == 'GET'
-            && !Environment::disableCacheControl();
+        return !Environment::disableCacheControl();
     }
 
     /**

@@ -16,6 +16,10 @@ class CacheControlEngine implements CacheControlEngineInterface
      */
     public function addMaxAge(int $maxAge): void
     {
+        // Cache only GET operations
+        if ($_SERVER['REQUEST_METHOD'] != 'GET') {
+            return;
+        }
         // Keep the minumum max age
         if (is_null($this->minimumMaxAge) || $maxAge < $this->minimumMaxAge) {
             $this->minimumMaxAge = $maxAge;
