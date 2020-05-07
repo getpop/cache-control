@@ -34,7 +34,10 @@ class Component extends AbstractComponent
 
     protected static function resolveEnabled()
     {
-        return !Environment::disableCacheControl();
+        return
+            // Cache only GET operations
+            $_SERVER['REQUEST_METHOD'] == 'GET'
+            && !Environment::disableCacheControl();
     }
 
     /**
