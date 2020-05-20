@@ -1,2 +1,2 @@
 <?php
-\PoP\CacheControl\Component::init();
+//\PoP\CacheControl\Component::initialize();
