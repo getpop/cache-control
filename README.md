@@ -20,6 +20,14 @@ Via Composer
 composer require getpop/cache-control
 ```
 
+## Usage
+
+Initialize the component:
+
+``` php
+\PoP\CacheControl\Component::initialize();
+```
+
 ## How it works
 
 It adds a mandatory directive `<cacheControl>` to all fields, which has a max-age value set for each field.
