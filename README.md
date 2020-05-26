@@ -25,7 +25,9 @@ composer require getpop/cache-control
 Initialize the component:
 
 ``` php
-\PoP\CacheControl\Component::initialize();
+\PoP\Root\ComponentLoader::initializeComponents([
+    \PoP\CacheControl\Component::class,
+]);
 ```
 
 ## How it works
