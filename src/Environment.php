@@ -6,14 +6,10 @@ namespace PoP\CacheControl;
 
 class Environment
 {
+    public const DEFAULT_CACHE_CONTROL_MAX_AGE = 'DEFAULT_CACHE_CONTROL_MAX_AGE';
+
     public static function disableCacheControl(): bool
     {
         return isset($_ENV['DISABLE_CACHE_CONTROL']) ? strtolower($_ENV['DISABLE_CACHE_CONTROL']) == "true" : false;
-    }
-
-    public static function getDefaultCacheControlMaxAge(): int
-    {
-        // If not set, use 1 minute by default
-        return isset($_ENV['DEFAULT_CACHE_CONTROL_MAX_AGE']) ? (int)$_ENV['DEFAULT_CACHE_CONTROL_MAX_AGE'] : 60;
     }
 }

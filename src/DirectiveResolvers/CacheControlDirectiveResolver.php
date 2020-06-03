@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\CacheControl\DirectiveResolvers;
 
-use PoP\CacheControl\Environment;
+use PoP\CacheControl\ComponentConfiguration;
 
 class CacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
@@ -25,6 +25,6 @@ class CacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolve
      */
     public function getMaxAge(): ?int
     {
-        return Environment::getDefaultCacheControlMaxAge();
+        return ComponentConfiguration::getDefaultCacheControlMaxAge();
     }
 }
