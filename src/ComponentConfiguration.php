@@ -18,7 +18,7 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::DEFAULT_CACHE_CONTROL_MAX_AGE;
         $selfProperty = &self::$getDefaultCacheControlMaxAge;
-        $defaultValue = 60;
+        $defaultValue = 86400; // 1 day
         $callback = [EnvironmentValueHelpers::class, 'toInt'];
 
         // Initialize property from the environment/hook
