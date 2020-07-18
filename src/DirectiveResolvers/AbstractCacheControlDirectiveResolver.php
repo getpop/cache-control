@@ -54,7 +54,7 @@ abstract class AbstractCacheControlDirectiveResolver extends AbstractGlobalDirec
      *
      * @return boolean
      */
-    public function canExecuteMultipleTimesInField(): bool
+    public function isRepeatable(): bool
     {
         return true;
     }
