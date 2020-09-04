@@ -11,6 +11,10 @@ class CacheControlEngineFacade
 {
     public static function getInstance(): CacheControlEngineInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('cache_control_engine');
+        /**
+         * @var CacheControlEngineInterface
+         */
+        $service = ContainerBuilderFactory::getInstance()->get('cache_control_engine');
+        return $service;
     }
 }

@@ -11,6 +11,10 @@ class CacheControlManagerFacade
 {
     public static function getInstance(): CacheControlManagerInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('cache_control_manager');
+        /**
+         * @var CacheControlManagerInterface
+         */
+        $service = ContainerBuilderFactory::getInstance()->get('cache_control_manager');
+        return $service;
     }
 }
