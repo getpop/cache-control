@@ -6,7 +6,7 @@ namespace PoP\CacheControl\Managers;
 
 class CacheControlEngine implements CacheControlEngineInterface
 {
-    protected $minimumMaxAge;
+    protected ?int $minimumMaxAge = null;
 
     /**
      * Add a max age from a requested field

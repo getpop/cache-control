@@ -8,8 +8,14 @@ use PoP\CacheControl\Managers\CacheControlManagerInterface;
 
 class CacheControlManager implements CacheControlManagerInterface
 {
-    protected $fieldEntries = [];
-    protected $directiveEntries = [];
+    /**
+     * @var array[]
+     */
+    protected array $fieldEntries = [];
+    /**
+     * @var array[]
+     */
+    protected array $directiveEntries = [];
 
     public function getEntriesForFields(): array
     {
