@@ -1,8 +1,8 @@
 services:
-    cache_control_engine:
+    PoP\CacheControl\Managers\CacheControlEngineInterface:
         class: \PoP\CacheControl\Managers\CacheControlEngine
         public: true
 
-    cache_control_manager:
+    PoP\CacheControl\Managers\CacheControlManagerInterface:
         class: \PoP\CacheControl\Managers\CacheControlManager
         public: true
