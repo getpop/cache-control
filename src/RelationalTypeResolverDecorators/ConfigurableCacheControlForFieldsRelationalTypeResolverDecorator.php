@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PoP\CacheControl\TypeResolverDecorators;
+namespace PoP\CacheControl\RelationalTypeResolverDecorators;
 
 use PoP\ComponentModel\Instances\InstanceManagerInterface;
 use PoP\CacheControl\Managers\CacheControlManagerInterface;
 use PoP\ComponentModel\Schema\FieldQueryInterpreterInterface;
-use PoP\CacheControl\TypeResolverDecorators\ConfigurableCacheControlTypeResolverDecoratorTrait;
-use PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators\AbstractMandatoryDirectivesForFieldsTypeResolverDecorator;
+use PoP\CacheControl\RelationalTypeResolverDecorators\ConfigurableCacheControlRelationalTypeResolverDecoratorTrait;
+use PoP\MandatoryDirectivesByConfiguration\RelationalTypeResolverDecorators\AbstractMandatoryDirectivesForFieldsRelationalTypeResolverDecorator;
 
-class ConfigurableCacheControlForFieldsTypeResolverDecorator extends AbstractMandatoryDirectivesForFieldsTypeResolverDecorator
+class ConfigurableCacheControlForFieldsRelationalTypeResolverDecorator extends AbstractMandatoryDirectivesForFieldsRelationalTypeResolverDecorator
 {
-    use ConfigurableCacheControlTypeResolverDecoratorTrait;
+    use ConfigurableCacheControlRelationalTypeResolverDecoratorTrait;
 
     public function __construct(
         InstanceManagerInterface $instanceManager,
